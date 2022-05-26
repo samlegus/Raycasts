@@ -10,7 +10,8 @@ public class CharacterController2D : MonoBehaviour
 	[SerializeField] private LayerMask m_WhatIsGround;							// A mask determining what is ground to the character
 	[SerializeField] private Transform m_GroundCheck;							// A position marking where to check if the player is grounded.
 	[SerializeField] private Transform m_CeilingCheck;							// A position marking where to check for ceilings
-	[SerializeField] private Collider2D m_CrouchDisableCollider;				// A collider that will be disabled when crouching
+	[SerializeField] private Collider2D m_CrouchDisableCollider;                // A collider that will be disabled when crouching
+	[SerializeField] private LayerMask m_mask;
 
 	const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
 	private bool m_Grounded;            // Whether or not the player is grounded.
@@ -109,6 +110,23 @@ public class CharacterController2D : MonoBehaviour
 			Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
 			// And then smoothing it out and applying it to the character
 			m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+
+			if (m_Velocity.magnitude != 0f) // test if we're moving
+			{
+				//Use boxcast to see if we're about to hit a wall
+				Vector2 boxSize = GetComponent<BoxCollider2D>().size; //Get dimensions of our box collider
+				Vector2 origin = transform.position;
+				Vector2 direction = Vector2.right * Mathf.Sign(m_Velocity.x);
+				float angle = 0f;
+				float distance = boxSize.x;
+
+				RaycastHit2D hit =
+					Physics2D.BoxCast(origin, boxSize, angle, direction, distance, m_mask);
+				//if we detect something....
+				if (hit.transform != null)
+					m_Rigidbody2D.velocity = new Vector2(0f, m_Rigidbody2D.velocity.y); //Nuke horizontal velocity
+																						//Debug.Log(hit.transform.name);
+			}
 
 			// If the input is moving the player right and the player is facing left...
 			if (move > 0 && !m_FacingRight)

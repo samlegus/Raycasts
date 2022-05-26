@@ -8,6 +8,9 @@ public class Enemy : MonoBehaviour
     public float shotsPerSecond = 1f;
     bool canShoot = true;
 
+    public RaycastHit2D hit;
+    public float detectionRange = 5f;
+
     void Start()
     {
        
@@ -25,5 +28,13 @@ public class Enemy : MonoBehaviour
         GameObject bullet = Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation);
         yield return new WaitForSeconds(shotsPerSecond);
         canShoot = true;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (hit.transform != null)
+            Gizmos.DrawWireSphere(hit.point, .25f);
+
+        Gizmos.DrawLine(transform.position, (Vector2)transform.position + Vector2.left * detectionRange);
     }
 }

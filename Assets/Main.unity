@@ -744,6 +744,9 @@ MonoBehaviour:
   m_GroundCheck: {fileID: 1007352555}
   m_CeilingCheck: {fileID: 1574803884}
   m_CrouchDisableCollider: {fileID: 820667356}
+  m_mask:
+    serializedVersion: 2
+    m_Bits: 512
   OnLandEvent:
     m_PersistentCalls:
       m_Calls:
@@ -1724,7 +1727,7 @@ GameObject:
   - component: {fileID: 1813485691}
   - component: {fileID: 1813485690}
   - component: {fileID: 1813485689}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Middle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
