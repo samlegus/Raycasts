@@ -118,14 +118,14 @@ public class CharacterController2D : MonoBehaviour
 				Vector2 origin = transform.position;
 				Vector2 direction = Vector2.right * Mathf.Sign(m_Velocity.x);
 				float angle = 0f;
-				float distance = boxSize.x;
+				float distance = boxSize.x / 2f;
 
 				RaycastHit2D hit =
 					Physics2D.BoxCast(origin, boxSize, angle, direction, distance, m_mask);
 				//if we detect something....
 				if (hit.transform != null)
 					m_Rigidbody2D.velocity = new Vector2(0f, m_Rigidbody2D.velocity.y); //Nuke horizontal velocity
-																						//Debug.Log(hit.transform.name);
+				//Debug.Log(hit.transform.name);
 			}
 
 			// If the input is moving the player right and the player is facing left...
