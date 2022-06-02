@@ -6,15 +6,21 @@ public class Enemy : MonoBehaviour
 {
     public GameObject projectilePrefab;
     public Transform gun;
+    public float shotDelay = 1f;
+    bool canShoot = true;
 
     void Update()
     {
-        Fire();
+        if (canShoot == true)
+            StartCoroutine(Fire());
     }
 
-    void Fire()
+    IEnumerator Fire()
     {
+        canShoot = false;
         GameObject bullet = Instantiate(projectilePrefab, gun.position, projectilePrefab.transform.rotation);
+        yield return new WaitForSeconds(shotDelay);
+        canShoot = true;
     }
 
     private void OnDrawGizmos()
